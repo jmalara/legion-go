@@ -25,6 +25,7 @@ Set up over one long session on 2026-05-25. Stuff worth remembering before the n
 - [MoonDeck pre-config](docs/09-moondeck-preconfig.md) — pairing the Legion's Decky plugin with Sunshine
 - [Auto-swap primary display on stream](docs/10-display-autoswap.md) — make games launch on VDD, not the 4K monitors
 - [SteamOS version audit](docs/11-steamos-version-audit.md) — what 3.8.5 already does natively, what overlaps with plugins, action items
+- [Deep audit findings](docs/12-deep-audit-findings.md) — what we learned digging deeper: EPP is the real CPU knob, steamos-manager overrides everything, etc.
 
 ## Scripts
 

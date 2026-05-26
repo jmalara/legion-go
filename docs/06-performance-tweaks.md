@@ -1,5 +1,7 @@
 # Performance tweaks (Legion side)
 
+> ⚠️ **Update 2026-05-25 (after deep audit)**: The CPU governor recommendation in this doc is now stale. steamos-manager actively reverts governor/EPP changes — our systemd service is overridden within seconds. See [`12-deep-audit-findings.md`](12-deep-audit-findings.md) for the real story. The sysctl tweaks (swappiness, vfs_cache_pressure) below are still good — those persist.
+
 System-level tweaks applied to the Legion Go 2's SteamOS install. Re-runnable scripts in [`scripts/legion-steamos/`](../scripts/legion-steamos/).
 
 ## What we did and why
