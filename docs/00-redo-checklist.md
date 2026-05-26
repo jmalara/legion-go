@@ -80,12 +80,14 @@ In Game Mode, Quick Access → Decky:
 
 Detail: [04-moonlight-streaming-settings.md](04-moonlight-streaming-settings.md) for streaming-specific Moonlight client settings.
 
-## Phase 7 — Wake-on-LAN + MoonDeck pairing
+## Phase 7 — Wake-on-LAN + MoonDeck Buddy + MoonDeck pairing
 
 - [ ] On the Windows host, verify WoL is enabled (see [08-wake-on-lan.md](08-wake-on-lan.md))
-- [ ] In MoonDeck on the Legion, add host using its IP + Sunshine PIN (see [09-moondeck-preconfig.md](09-moondeck-preconfig.md))
-- [ ] Enable WoL toggle in MoonDeck with host MAC
-- [ ] Test: shut down host, hit a MoonDeck-enabled game on the Legion — host should wake and stream
+- [ ] On the Windows host, install MoonDeck Buddy via [`scripts/host-windows/install-moondeck-buddy.ps1`](../scripts/host-windows/install-moondeck-buddy.ps1) — required, Sunshine alone isn't enough
+- [ ] On the Legion, run [`scripts/legion-steamos/moondeck-prefs.sh`](../scripts/legion-steamos/moondeck-prefs.sh) for sensible UI defaults
+- [ ] In MoonDeck (Game Mode → Decky), add host. PIN-pair with both Buddy AND Sunshine (see [09-moondeck-preconfig.md](09-moondeck-preconfig.md))
+- [ ] Enter host MAC into MoonDeck's WoL field
+- [ ] Test: shut down host, launch a MoonDeck-enabled game on the Legion — host should wake and stream
 
 ## Phase 8 — Cleanup / hardening
 
