@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  MTT Virtual Display Driver settings for Legion Go 2 streaming.
+  Path on Windows: C:\VirtualDisplayDriver\vdd_settings.xml
+
+  Notes:
+  - The FIRST resolution listed becomes the VDD's default mode on driver init.
+  - We put 1920x1200 first because that's the Legion Go 2's native panel res.
+  - After editing, reload the driver:
+      pnputil /remove-device <VDD-InstanceId>
+      pnputil /scan-devices
+    Or reboot.
+  - Then manually set the resolution via Windows Display Settings to persist.
+-->
+<vdd_settings>
+    <monitors>
+        <count>1</count>
+    </monitors>
+    <gpu>
+        <friendlyname>default</friendlyname>
+    </gpu>
+    <global>
+        <!-- Global refresh rates applied to all resolutions below -->
+        <g_refresh_rate>60</g_refresh_rate>
+        <g_refresh_rate>90</g_refresh_rate>
+        <g_refresh_rate>120</g_refresh_rate>
+        <g_refresh_rate>144</g_refresh_rate>
+        <g_refresh_rate>165</g_refresh_rate>
+        <g_refresh_rate>244</g_refresh_rate>
+    </global>
+    <resolutions>
+        <!-- Legion Go 2 native panel (1920x1200 @ 120 = streaming target) -->
+        <resolution>
+            <width>1920</width>
+            <height>1200</height>
+            <refresh_rate>120</refresh_rate>
+        </resolution>
+        <!-- 4K for host monitor matching -->
+        <resolution>
+            <width>3840</width>
+            <height>2160</height>
+            <refresh_rate>120</refresh_rate>
+        </resolution>
+        <!-- 16:10 1600p -->
+        <resolution>
+            <width>2560</width>
+            <height>1600</height>
+            <refresh_rate>120</refresh_rate>
+        </resolution>
+        <!-- 16:9 1440p (for Mac client) -->
+        <resolution>
+            <width>2560</width>
+            <height>1440</height>
+            <refresh_rate>120</refresh_rate>
+        </resolution>
+        <!-- 16:9 1080p -->
+        <resolution>
+            <width>1920</width>
+            <height>1080</height>
+            <refresh_rate>120</refresh_rate>
+        </resolution>
+        <!-- Fallback / low-power -->
+        <resolution>
+            <width>1366</width>
+            <height>768</height>
+            <refresh_rate>60</refresh_rate>
+        </resolution>
+    </resolutions>
+    <options>
+        <CustomEdid>false</CustomEdid>
+        <PreventSpoof>false</PreventSpoof>
+        <EdidCeaOverride>false</EdidCeaOverride>
+        <HardwareCursor>true</HardwareCursor>
+        <SDR10bit>false</SDR10bit>
+        <!-- HDRPlus and SDR10bit conflict - leave both false -->
+        <HDRPlus>false</HDRPlus>
+        <logging>false</logging>
+        <debuglogging>false</debuglogging>
+    </options>
+</vdd_settings>

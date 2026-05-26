@@ -1,0 +1,45 @@
+# Sunshine configuration for Legion Go 2 streaming
+# Path on Windows: C:\Program Files\Sunshine\config\sunshine.conf
+#
+# IMPORTANT before copying as-is:
+# - `sunshine_name` is set to a per-machine name. Adjust to yours.
+# - Adjust `resolutions` list if your client devices need different sizes.
+# - `dd_wa_hdr_toggle` is the HDR workaround toggle and is generally safe.
+# - The `dd_*_option` settings are intentionally NOT included. We tried
+#   automatic resolution swapping and it picked the wrong mode (800x600).
+#   See docs/03-windows-host-sunshine.md and docs/07-known-issues.md.
+
+sunshine_name = Replace Me
+
+# Encoder
+encoder = nvenc
+nvenc_preset = 1                  # P1 = lowest latency for 5090's 9th-gen NVENC
+
+# Codec/FPS lists Moonlight client will see
+fps = [60,90,100,120,144]
+
+# Resolutions list — these are offered to the client manual-override dropdown
+# Sunshine encodes at whatever the client requests, regardless of this list
+resolutions = [
+    3840x2160,
+    3456x2234,
+    2560x1600,
+    1920x1200,
+    1920x1080
+]
+
+# HDR workaround for the display device toggle.
+# Useful when streaming HDR content. Safe to leave enabled.
+dd_wa_hdr_toggle = enabled
+
+# Misc
+notify_pre_releases = enabled
+qsv_preset = slowest
+upnp = enabled
+
+# DELIBERATELY NOT SET (tried, didn't work well):
+# dd_configuration_option = ensure_primary
+# dd_resolution_option = automatic
+# dd_refresh_rate_option = automatic
+# dd_hdr_option = automatic
+# global_prep_cmd = [{"do":"...","undo":"..."}]

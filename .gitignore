@@ -1,0 +1,25 @@
+# Claude Code (per-machine settings)
+.claude/
+
+# macOS
+.DS_Store
+._*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local config / secrets — never commit
+*.local
+.env
+.env.*
+secrets/
+*.pem
+*.key
+!*.pub.key
+authorized_keys
+
+# Logs
+*.log
