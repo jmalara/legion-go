@@ -35,8 +35,12 @@ Because `schtasks /Run` returns immediately (fire-and-forget), Sunshine doesn't 
 
 | Task | What it does | Calls |
 |---|---|---|
-| `SetVDDPrimary` | Make VDD the primary display | `MultiMonitorTool.exe /SetPrimary MTT1337` |
-| `SetROGPrimary` | Restore ROG STRIX as primary | `MultiMonitorTool.exe /SetPrimary AUSAA06` |
+| `SetVDDPrimary` | Make VDD primary AND disable both physical monitors | `/SetPrimary MTT1337` then `/disable AUSAA06` then `/disable AUS32F6` |
+| `SetROGPrimary` | Re-enable physical monitors AND restore primary | `/enable AUSAA06` then `/enable AUS32F6` then `/SetPrimary AUSAA06` |
+
+**Why disable physical monitors, not just set primary?** Games like Resident Evil Requiem remember which monitor they were on. Even if you make VDD primary, the game launches on its remembered monitor (one of the ROG STRIXs). Disabling them entirely forces all windows onto the VDD.
+
+Side effect: your 4K monitors go dark during streaming. That's expected. They come back when the stream ends.
 
 Both registered with:
 - **Principal**: `jermspc\jerem` (interactive user)

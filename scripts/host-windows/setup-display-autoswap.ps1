@@ -21,23 +21,46 @@ $ErrorActionPreference = 'Continue'
 $dir = "C:\Tools\display-scripts"
 New-Item -ItemType Directory -Force -Path $dir | Out-Null
 
-# --- VDD primary script ---
+# --- VDD primary + disable physical monitors ---
+# Just setting VDD as primary isn't enough — games can launch on their
+# remembered monitor (e.g., Resident Evil Requiem remembers which display
+# it was on last). Disabling the physical monitors forces all windows to
+# the VDD because that's the only active display.
 $setVdd = @'
 $ErrorActionPreference = 'SilentlyContinue'
 $log = "$env:TEMP\display-swap.log"
-"=== $(Get-Date) Set-VDD-Primary ===" | Out-File $log -Append
 $mmt = "C:\Tools\MultiMonitorTool\MultiMonitorTool.exe"
+
+"=== $(Get-Date) Set-VDD-Primary ===" | Out-File $log -Append
+
+# Step 1: make VDD primary first
 & $mmt /SetPrimary "MTT1337" *>> $log
-Start-Sleep -Seconds 1
+Start-Sleep -Milliseconds 800
+
+# Step 2: disable the physical monitors (forces all windows onto VDD)
+& $mmt /disable "AUSAA06" *>> $log
+& $mmt /disable "AUS32F6" *>> $log
+
+"Done." | Out-File $log -Append
 '@
 
-# --- ROG primary script ---
+# --- ROG primary + re-enable physical monitors ---
 $setRog = @'
 $ErrorActionPreference = 'SilentlyContinue'
 $log = "$env:TEMP\display-swap.log"
-"=== $(Get-Date) Set-ROG-Primary ===" | Out-File $log -Append
 $mmt = "C:\Tools\MultiMonitorTool\MultiMonitorTool.exe"
+
+"=== $(Get-Date) Set-ROG-Primary ===" | Out-File $log -Append
+
+# Step 1: re-enable the physical monitors
+& $mmt /enable "AUSAA06" *>> $log
+& $mmt /enable "AUS32F6" *>> $log
+Start-Sleep -Seconds 2
+
+# Step 2: restore ROG STRIX as primary
 & $mmt /SetPrimary "AUSAA06" *>> $log
+
+"Done." | Out-File $log -Append
 '@
 
 Set-Content -Path "$dir\set-vdd-primary.ps1" -Value $setVdd -Encoding ASCII
