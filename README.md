@@ -27,6 +27,7 @@ Set up over one long session on 2026-05-25. Stuff worth remembering before the n
 - [SteamOS version audit](docs/11-steamos-version-audit.md) — what 3.8.5 already does natively, what overlaps with plugins, action items
 - [Deep audit findings](docs/12-deep-audit-findings.md) — what we learned digging deeper: EPP is the real CPU knob, steamos-manager overrides everything, etc.
 - [Updating from 3.8.5 to 3.9.0](docs/13-update-to-3.9.0.md) — channel switch saga, what changed, what survived
+- [Launch options cheat sheet](docs/14-launch-options-cheatsheet.md) — per-game env vars, MangoHud, GE-Proton, FSR
 
 ## Scripts
 
