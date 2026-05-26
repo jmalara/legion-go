@@ -24,6 +24,7 @@ Set up over one long session on 2026-05-25. Stuff worth remembering before the n
 - [Wake-on-LAN setup](docs/08-wake-on-lan.md) — wake the host from the Legion before streaming
 - [MoonDeck pre-config](docs/09-moondeck-preconfig.md) — pairing the Legion's Decky plugin with Sunshine
 - [Auto-swap primary display on stream](docs/10-display-autoswap.md) — make games launch on VDD, not the 4K monitors
+- [SteamOS version audit](docs/11-steamos-version-audit.md) — what 3.8.5 already does natively, what overlaps with plugins, action items
 
 ## Scripts
 
