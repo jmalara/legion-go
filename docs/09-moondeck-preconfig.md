@@ -1,61 +1,87 @@
-# MoonDeck pre-configuration
+# MoonDeck setup — host (Buddy) + client (Decky plugin)
 
-MoonDeck lets you launch Steam games directly via Moonlight without manually adding them as Non-Steam games. The setup needs to be done from the Legion (in Game Mode → Decky → MoonDeck panel), but here's the reference for what to put in.
+MoonDeck has **two halves** that both need to be configured:
 
-## What MoonDeck needs
+1. **MoonDeck Buddy** — small companion app on the Windows host (port 59999). Sunshine alone isn't enough.
+2. **MoonDeck Decky plugin** — on the Legion. Pairs with both Sunshine AND Buddy.
 
-| Field | Value | Notes |
+## Host: MoonDeck Buddy install
+
+Already installed at `C:\Tools\MoonDeckBuddy\MoonDeckBuddy-1.9.2-win64\bin\MoonDeckBuddy.exe`.
+
+- **Autostart**: registered in `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` as `"MoonDeckBuddy"`. Starts on next login.
+- **Port**: 59999 (confirmed listening)
+- **Reinstall script**: [`scripts/host-windows/install-moondeck-buddy.ps1`](../scripts/host-windows/install-moondeck-buddy.ps1)
+
+The installer-style `.exe` from GitHub hangs on a UAC/wizard prompt when run from SSH — we use the portable `.7z` instead.
+
+## Client: MoonDeck Decky plugin (Legion)
+
+Plugin installed already. UI preferences pre-set via [`scripts/legion-steamos/moondeck-prefs.sh`](../scripts/legion-steamos/moondeck-prefs.sh).
+
+Settings file: `~/.config/moondeck/settings.json`.
+
+## Pairing — must be interactive
+
+Both halves use PIN-based pairing. This part you do once, in Game Mode:
+
+1. On the Legion in Game Mode, open **Quick Access → Decky → MoonDeck**
+2. **Add new host** — enter:
+   - Host name: anything (e.g. "JermsPC")
+   - Address: `192.168.1.157`
+3. MoonDeck shows a PIN — note it
+4. On the Windows host, open the **MoonDeck Buddy tray icon** → enter the PIN there
+5. Repeat for Sunshine: same host page → **Pair Sunshine** → use the PIN tab in `https://localhost:47990` (Sunshine web UI) on host
+6. MoonDeck stores the host UUID in `hostSettings` in `settings.json`
+
+## Host MAC for WoL
+
+`50-EB-F6-CE-2B-EB` — paste this into MoonDeck's per-host **Wake-on-LAN** field after pairing.
+
+## Schema reference
+
+For if you ever need to manually edit `~/.config/moondeck/settings.json`:
+
+```typescript
+HostSettings {
+    address: string         // "192.168.1.157"
+    manualAddress: boolean  // true if user-entered
+    infoPort: number        // Sunshine info port, default 47989
+    buddyPort: number       // MoonDeck Buddy port, default 59999
+    hostName: string        // display name
+    mac: string             // for WoL, "50-EB-F6-CE-2B-EB"
+}
+```
+
+Schema lives in the plugin source at `~/homebrew/plugins/moondeck/python/lib/cli/settings.py`.
+
+## Default ports
+
+| Service | Port | Protocol |
 |---|---|---|
-| Host name | Whatever you want | Display label only |
-| Host IP | `192.168.1.157` | Your Windows host |
-| Sunshine port | `47989` | Default Sunshine HTTPS port |
-| HTTPS port | `47984` | Default Sunshine config port |
-| MAC address | `50-EB-F6-CE-2B-EB` | For WoL — MoonDeck can wake the host |
-| Pairing PIN | Generated on first connect | One-time setup |
-
-## Steps in the Decky MoonDeck panel
-
-1. Quick Access → Decky icon → **MoonDeck**
-2. **Add host**
-3. Enter the host's IP (192.168.1.157) — MoonDeck discovers Sunshine via the default ports
-4. MoonDeck shows a **PIN** to enter on the host side
-5. On Windows: open `https://localhost:47990` (Sunshine web UI) → **PIN** tab → enter the PIN → Submit
-6. Pair completes
-7. In MoonDeck settings, enable:
-   - **Wake on LAN** → enter MAC `50-EB-F6-CE-2B-EB` (auto-wakes host before stream)
-   - **Quit game when host disconnects**: yes
-   - **Resolution / FPS overrides**: 1920×1200 @ 120 (matches Legion native)
-
-## How it works after pairing
-
-1. Browse your Steam library on the Legion as normal
-2. For games marked as MoonDeck-enabled (per-game toggle), launching them:
-   - Sends WoL packet to host (if asleep)
-   - Connects to Sunshine
-   - Launches the game on the host via Sunshine's `cmd` mechanism
-   - Streams it back to the Legion via Moonlight
-   - When you exit, host gets the signal and quits the game
-3. Quit Moonlight client = Steam library on Legion shows the game as not-running again
-
-## Why it's better than manual Add Non-Steam Game
-
-- No `flatpak run` shenanigans for Moonlight client
-- Maintains Steam game library structure on Legion
-- Achievements, playtime, screenshots all stay tied to the actual Steam entry
-- Friend list / Steam Chat work as expected
-- WoL integrated — host doesn't need to stay on
+| Sunshine HTTPS (control) | 47984 | TCP |
+| Sunshine info | 47989 | TCP |
+| Sunshine web UI | 47990 | TCP (HTTPS) |
+| MoonDeck Buddy | 59999 | TCP |
+| GameStream / RTSP | 48010 | TCP |
+| Audio / video stream | 47998-48000 | UDP |
 
 ## Things to set on the host side once paired
 
-In Sunshine web UI (`https://localhost:47990` from your Windows browser):
+In Sunshine web UI (`https://localhost:47990`):
 
-- **Pin tab**: confirm the MoonDeck pairing shows as a client
-- **Apps**: confirm `Steam Big Picture`, `EA Games`, `Epic Games`, and `Desktop` are listed
-- **Configuration → Audio/Video**: confirm encoder = NVENC, codec preference includes AV1
-- **Configuration → Advanced → Internal Stream Port**: leave at default
+- **Pin tab**: confirm MoonDeck pairing landed
+- **Apps**: Desktop, Steam Big Picture, EA Games, Epic Games (all pre-configured)
+- **Configuration → Audio/Video**: NVENC encoder, AV1 in codec list
 
-## Caveats
+## Things that don't pre-config cleanly
 
-- First pair sometimes fails — restart Sunshine service, restart Decky, retry
-- After a Windows update, the pairing can break (Sunshine certificates regenerate) — re-pair
-- WoL through MoonDeck depends on the host actually being properly configured for WoL — see [`docs/08-wake-on-lan.md`](08-wake-on-lan.md)
+- **Host pairing entry** — requires fresh PIN exchange every time (paired UUID + cert is per-session)
+- **Per-game launch profiles** in Sunshine — depend on which games you have installed, set via web UI
+
+## Caveats / known issues
+
+- First pair sometimes fails — restart Sunshine + Buddy + Decky service, retry
+- After a Windows update, certs can rotate and pairing breaks — re-pair
+- Buddy tray icon may not appear if it was launched from a non-interactive session (SSH) — log out + log in to get it back in the system tray
+- MoonDeck Buddy is portable — uninstalling = deleting `C:\Tools\MoonDeckBuddy` and removing the HKCU Run entry
