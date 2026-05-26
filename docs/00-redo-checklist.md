@@ -80,7 +80,14 @@ In Game Mode, Quick Access → Decky:
 
 Detail: [04-moonlight-streaming-settings.md](04-moonlight-streaming-settings.md) for streaming-specific Moonlight client settings.
 
-## Phase 7 — Cleanup / hardening
+## Phase 7 — Wake-on-LAN + MoonDeck pairing
+
+- [ ] On the Windows host, verify WoL is enabled (see [08-wake-on-lan.md](08-wake-on-lan.md))
+- [ ] In MoonDeck on the Legion, add host using its IP + Sunshine PIN (see [09-moondeck-preconfig.md](09-moondeck-preconfig.md))
+- [ ] Enable WoL toggle in MoonDeck with host MAC
+- [ ] Test: shut down host, hit a MoonDeck-enabled game on the Legion — host should wake and stream
+
+## Phase 8 — Cleanup / hardening
 
 - [ ] If you used a shared SSH key for setup, remove it: `sed -i '/<key-identifier>/d' ~/.ssh/authorized_keys`
 - [ ] If SSH isn't needed long-term: `sudo systemctl disable --now sshd`

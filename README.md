@@ -21,6 +21,8 @@ Set up over one long session on 2026-05-25. Stuff worth remembering before the n
 - [Decky plugins worth installing](docs/05-decky-plugins.md)
 - [Performance tweaks (sysctl, governor)](docs/06-performance-tweaks.md)
 - [Known issues & workarounds](docs/07-known-issues.md)
+- [Wake-on-LAN setup](docs/08-wake-on-lan.md) — wake the host from the Legion before streaming
+- [MoonDeck pre-config](docs/09-moondeck-preconfig.md) — pairing the Legion's Decky plugin with Sunshine
 
 ## Scripts
 
@@ -31,6 +33,7 @@ Re-runnable. Read before running — most need root.
 - [`scripts/legion-steamos/cpu-governor-performance.service`](scripts/legion-steamos/cpu-governor-performance.service) — systemd unit, sets governor on boot
 - [`scripts/host-windows/vdd_settings.xml`](scripts/host-windows/vdd_settings.xml) — working VDD config with 1920×1200 as default
 - [`scripts/host-windows/sunshine.conf.example`](scripts/host-windows/sunshine.conf.example) — working Sunshine config (sanitized)
+- [`scripts/wake-host.sh`](scripts/wake-host.sh) — portable WoL sender (Mac + Legion)
 
 ## Honest take
 
